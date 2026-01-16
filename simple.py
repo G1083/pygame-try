@@ -1,9 +1,24 @@
+"""
+How to run this:
+
+VS Code
+->
+Open this directory by dragging it from Windows into VS Code
+->
+Control ` (to open shell)
+->
+cd Downloads/ally-pygame/ally-pygame
+->
+python simple.py
+"""
+
 import pygame
 
 pygame.init()
 
-screen = pygame.display.set_mode((400, 300))
-
+screen_with = 1080
+screen_height = 640
+screen = pygame.display.set_mode((screen_with, screen_height))
 # smiley = pygame.image.load("emoji.png").convert()
 smiley = pygame.image.load("smiley.png").convert_alpha()
 
@@ -23,26 +38,38 @@ d_down = False
 
 while running:
     # red, green, blue: between 0 and 255
-    screen.fill((255, 255, 255))
+    screen.fill((255, 0, 255))
+
+    smiley_x = int(x) % (screen_with - 110 )
+    smiley_y = int(y) % (screen_height - 110)
 
     # This is why it's diagonal: x is mod 400, y is mod 300.
-    screen.blit(smiley, (int(x) % 400, int(y) % 300))
+    screen.blit(smiley, (smiley_x, smiley_y))
     # intiially: x = x + 1, i.e., 1 pixel per frame
-    # now: 100 pixels per second
+
+    hitbox = pygame.Rect(smiley_x, smiley_y, smiley.get_width(), smiley.get_height())
+    target = pygame.Rect(600, 200, 50, 50)
+    collision = hitbox.colliderect(target)
+
+    if collision:
+        pygame.quit()
+        pygame.draw.rect(screen, ( 50, 255, 25), target)
+    else : 
+        pygame.draw.rect(screen, ( 255, 255, 25), target)
 
     # x = x + 100 * delta_time_in_seconds
     if w_down == True : 
-        y = y - 50 * delta_time_in_seconds
+        y = y - 500 * delta_time_in_seconds
  
  
     if s_down == True : 
-        y = y + 50 * delta_time_in_seconds 
+        y = y + 500 * delta_time_in_seconds 
  
     if a_down == True : 
-        x = x - 50 * delta_time_in_seconds
+        x = x - 500 * delta_time_in_seconds
 
     if d_down == True : 
-        x = x + 50 * delta_time_in_seconds
+        x = x + 500 * delta_time_in_seconds
 
     for event in pygame.event.get():
         # print('Got an event:', event)
