@@ -43,14 +43,13 @@ while running:
     # red, green, blue: between 0 and 255
     screen.fill((255, 0, 255))
 
-    smiley_x = int(x) % (screen_with - 110 )
-    smiley_y = int(y) % (screen_height - 110)
+
 
     # This is why it's diagonal: x is mod 400, y is mod 300.
-    screen.blit(smiley, (smiley_x, smiley_y))
+    screen.blit(smiley, (x, y))
     # intiially: x = x + 1, i.e., 1 pixel per frame
 
-    hitbox = pygame.Rect(smiley_x, smiley_y, smiley.get_width(), smiley.get_height())
+    hitbox = pygame.Rect(x, y, smiley.get_width(), smiley.get_height())
     target = pygame.Rect(600, 200, 50, 50)
     collision = hitbox.colliderect(target)
 
@@ -74,18 +73,21 @@ while running:
         pygame.draw.rect(screen, ( 50, 255, 25), target)
 
     # x = x + 100 * delta_time_in_seconds
-    if w_down == True : 
+    if w_down == True and y > 0: 
         y = y - 500 * delta_time_in_seconds
  
  
-    if s_down == True : 
+    if s_down == True and y < screen_height - smiley.get_height(): 
         y = y + 500 * delta_time_in_seconds 
  
-    if a_down == True : 
+    if a_down == True and x > 0: 
         x = x - 500 * delta_time_in_seconds
 
-    if d_down == True : 
+    if d_down == True and x < screen_with - smiley.get_width(): 
         x = x + 500 * delta_time_in_seconds
+
+        #  d_down = False
+        # x = screen_with
 
     for event in pygame.event.get():
         # print('Got an event:', event)
