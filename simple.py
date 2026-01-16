@@ -36,6 +36,9 @@ a_down = False
 s_down = False
 d_down = False 
 
+collided_already = False
+num_collided = 0
+    
 while running:
     # red, green, blue: between 0 and 255
     screen.fill((255, 0, 255))
@@ -52,10 +55,23 @@ while running:
     collision = hitbox.colliderect(target)
 
     if collision:
+        if not collided_already :
+            num_collided = num_collided + 1
+        collided_already = True
+    else: collided_already = False 
+
+
+    if num_collided == 1:
+        # draw yellow
+        pygame.draw.rect(screen, ( 255, 200, 25), target)
+    elif num_collided == 2:
+        # draw red
+        pygame.draw.rect(screen, ( 255, 25, 25), target)
+    elif num_collided == 3:
         pygame.quit()
+    else: 
+        # draw green
         pygame.draw.rect(screen, ( 50, 255, 25), target)
-    else : 
-        pygame.draw.rect(screen, ( 255, 255, 25), target)
 
     # x = x + 100 * delta_time_in_seconds
     if w_down == True : 
